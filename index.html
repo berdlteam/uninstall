@@ -162,27 +162,41 @@
                 Help us understand how we can make Highlight Text better for you and others.
             </div>
 
+            <!-- Question 1 -->
             <div class="section-title">1. Why are you deleting the extension? *</div>
             <div class="checkbox-group">
-                <label class="checkbox-item"><input type="checkbox" name="reason" value="buggy">🪲 The extension was
-                    buggy</label>
-                <label class="checkbox-item"><input type="checkbox" name="reason" value="did_not_use">😶 I did not use
-                    it much</label>
-                <label class="checkbox-item"><input type="checkbox" name="reason" value="missing_features">⛓️ Some
-                    features were missing</label>
-                <label class="checkbox-item"><input type="checkbox" name="reason" value="other_tool">🙏 I prefer another
-                    tool</label>
-                <label class="checkbox-item"><input type="checkbox" name="reason" value="just_testing">👀 I was just
-                    testing it</label>
-                <label class="checkbox-item"><input type="checkbox" name="reason" value="other">Other</label>
+                <label class="checkbox-item">
+                    <input type="checkbox" name="reason" value="buggy">🪲 The extension was buggy
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" name="reason" value="did_not_use">😶 I did not use it much
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" name="reason" value="missing_features">⛓️ Some features were missing
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" name="reason" value="other_tool">🙏 I prefer another tool
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" name="reason" value="just_testing">👀 I was just testing it
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" name="reason" value="other">Other
+                </label>
             </div>
 
+            <!-- Question 2 -->
             <div class="section-title">2. Could you share more details? (Optional)</div>
             <textarea name="details" placeholder="Tell us what went wrong, what could be better..."></textarea>
 
-            <!-- Скрытое поле для объединенных чекбоксов -->
+            <!-- Optional Email -->
+            <div class="section-title">3. Your email (optional)</div>
+            <input type="email" name="user_email" placeholder="Your email (optional)">
+
+            <!-- Hidden field for combined checkboxes -->
             <input type="hidden" name="reason_combined">
 
+            <!-- Submit Button -->
             <button type="submit">Send Feedback →</button>
         </form>
 
