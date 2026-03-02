@@ -163,7 +163,7 @@
 
             <div class="checkbox-group">
                 <label class="checkbox-item">
-                    <input type="checkbox" name="reason" value="buggy" required>
+                    <input type="checkbox" name="reason" value="buggy">
                     🪲 The extension was buggy
                 </label>
 
@@ -199,6 +199,9 @@
 
             <textarea name="details" placeholder="Tell us what went wrong, what could be better..."></textarea>
 
+            <!-- скрытое поле для объединенных чекбоксов -->
+            <input type="hidden" name="reason_combined">
+
             <button type="submit">
                 Send Feedback →
             </button>
@@ -212,18 +215,26 @@
 
     </div>
 
+    <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.emailjs.com/sdk/3.2.0/email.min.js"></script>
     <script type="text/javascript">
         const form = document.getElementById("feedbackForm");
 
         form.addEventListener("submit", function (e) {
-            e.preventDefault(); // отменяем стандартную отправку формы
+            e.preventDefault();
 
-            // Отправка формы через EmailJS
+            // объединяем все выбранные причины
+            const checkedReasons = Array.from(document.querySelectorAll('input[name="reason"]:checked'))
+                .map(cb => cb.value)
+                .join(', ');
+
+            // ставим в скрытое поле
+            form.querySelector('input[name="reason_combined"]').value = checkedReasons;
+
+            // отправка формы через EmailJS
             emailjs.sendForm('service_x5ebvtl', 'feedback_template', this)
                 .then(() => {
-                    // Скрываем форму и показываем сообщение об успехе
-                    document.getElementById("feedbackForm").style.display = "none";
+                    form.style.display = "none";
                     document.getElementById("successMessage").style.display = "block";
                 }, (err) => {
                     alert("Failed to send feedback. Please try again.");
@@ -231,6 +242,7 @@
                 });
         });
     </script>
+
 </body>
 
 </html>
