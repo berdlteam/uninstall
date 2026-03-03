@@ -231,38 +231,64 @@
             document.getElementById('feedbackForm').addEventListener('submit', function (event) {
                 event.preventDefault();
 
-                const checkedReasons = Array.from(document.querySelectorAll('input[name="reason"]:checked'))
-                    .map(cb => cb.value)
-                    .join(', ');
-                this.querySelector('input[name="reason_combined"]').value = checkedReasons;
+                const form = this;
 
+                // Get selected reasons
+                const checkedReasons = Array.from(
+                    document.querySelectorAll('input[name="reason"]:checked')
+                ).map(cb => cb.value);
+
+                if (checkedReasons.length === 0) {
+                    alert("Please select at least one reason.");
+                    return;
+                }
+
+                const reasonsText = checkedReasons.join(', ');
+                form.querySelector('input[name="reason_combined"]').value = reasonsText;
+
+                // Get user info
                 const nameInput = document.querySelector('input[name="user_name"]');
                 const emailInput = document.querySelector('input[name="user_email"]');
+                const detailsInput = document.querySelector('textarea[name="details"]');
 
                 const name = nameInput ? nameInput.value.trim() : '';
                 const email = emailInput ? emailInput.value.trim() : '';
+                const details = detailsInput ? detailsInput.value.trim() : '';
 
-                let userInfo = '';
-                if (name || email) {
-                    const parts = [];
-                    if (name) parts.push(name);
-                    if (email) parts.push(email);
-                    userInfo = ` (${parts.join(' | ')})`;
+                // Build user text properly (no empty brackets)
+                let userText = 'User';
+
+                if (name && email) {
+                    userText = `User (${name} | ${email})`;
+                } else if (name) {
+                    userText = `User (${name})`;
+                } else if (email) {
+                    userText = `User (${email})`;
                 }
 
-                let hiddenMessageInput = this.querySelector('input[name="custom_message"]');
+                // Build full message cleanly
+                let fullMessage = `${userText} has uninstalled your Highlight Text extension.\n\n`;
+                fullMessage += `Reason: ${reasonsText}\n`;
+                fullMessage += `Additional details: ${details || 'None provided'}`;
+
+                // Create or update hidden message field
+                let hiddenMessageInput = form.querySelector('input[name="custom_message"]');
                 if (!hiddenMessageInput) {
                     hiddenMessageInput = document.createElement('input');
                     hiddenMessageInput.type = 'hidden';
                     hiddenMessageInput.name = 'custom_message';
-                    this.appendChild(hiddenMessageInput);
+                    form.appendChild(hiddenMessageInput);
                 }
-                hiddenMessageInput.value = `User${userInfo} has uninstalled your Highlight Text extension.`;
-                emailjs.sendForm('service_dms8mav', 'template_f3d73dk', this)
+
+                hiddenMessageInput.value = fullMessage;
+
+                // Send form
+                emailjs.sendForm('service_dms8mav', 'template_f3d73dk', form)
                     .then(() => {
-                        this.style.display = "none";
+                        form.style.display = "none";
                         document.getElementById("successMessage").style.display = "block";
-                    }, (error) => {
+                    })
+                    .catch((error) => {
                         console.error('FAILED...', error);
                         alert("Failed to send feedback. Please try again.");
                     });
