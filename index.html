@@ -258,7 +258,7 @@
                     this.appendChild(hiddenMessageInput);
                 }
                 hiddenMessageInput.value = `User${userInfo} has uninstalled your Highlight Text extension.`;
-                emailjs.sendForm('service_dms8mav', 'service_dms8mav', this)
+                emailjs.sendForm('service_dms8mav', 'template_f3d73dk', this)
                     .then(() => {
                         this.style.display = "none";
                         document.getElementById("successMessage").style.display = "block";
